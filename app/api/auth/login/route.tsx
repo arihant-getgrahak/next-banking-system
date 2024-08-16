@@ -24,7 +24,16 @@ export async function POST(request: NextRequest) {
         status: 500,
         data: "Invalid Password!!",
       });
-    return NextResponse.json(login);
+
+    const returnData = {
+      ...login,
+      password: undefined,
+    };
+
+    return NextResponse.json({
+      message: "Login Successfully",
+      data: returnData,
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

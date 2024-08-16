@@ -11,23 +11,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { RegisterApi } from "@/helper/api";
-import crypto from "crypto";
+import { RegisterUserType } from "@/types/userType";
 
 export default function Register() {
-  const passwordValidation = new RegExp(
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-  );
   const schema = z.object({
     name: z.string().min(1, { message: "Required" }),
     email: z.string().email({ message: "Invalid email" }),
     password: z.string().min(8, { message: "Must have at least 8 character" }),
-    // .regex(passwordValidation, {
-    //   message: "Your password is not valid",
-    // }),
   });
 
   const {
@@ -39,7 +33,7 @@ export default function Register() {
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await RegisterApi(data);
+    const res = await RegisterApi(data as RegisterUserType);
     if (res?.status != 200) return alert("Error");
     alert("Your account created successfully");
   });

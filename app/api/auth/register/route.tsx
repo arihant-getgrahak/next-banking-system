@@ -6,7 +6,6 @@ import { generateUniqueAccountNumber } from "@/helper/generateRandomNumber";
 export async function POST(request: NextRequest) {
   const data = await request.json();
 
-  console.log("data: ", data);
   const { password, email, name } = data;
   var salt = await bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT!));
   var hash = await bcrypt.hashSync(password, salt);
@@ -29,6 +28,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log(checkExistingUser);
+    
+
     if (checkExistingUser)
       return NextResponse.json({
         status: 500,
@@ -46,9 +48,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const data = {
+      ...register,
+      password: undefined,
+    };
+
     return NextResponse.json({
       message: "Account Open Successfully!!",
-      data: {},
+      data: data,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
