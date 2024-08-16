@@ -1,7 +1,9 @@
+import Dashboard from "@/components/dashboard";
+
 export default function DashboardPage({
   params,
 }: {
   params: { user: string };
 }) {
-  return <div>{params.user}</div>;
+  return <Dashboard user={params.user} />;
 }

@@ -16,8 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { LoginApi } from "@/helper/api";
 import { LoginUserType } from "@/types/userType";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const schema = z.object({
     email: z.string().email({ message: "Invalid email" }),
     password: z.string().min(8, { message: "Must have at least 8 character" }),
@@ -27,6 +29,7 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
@@ -35,6 +38,8 @@ export default function Login() {
     const res = await LoginApi(data as LoginUserType);
     if (res?.status != 200) return alert("Error");
     alert("Login Successfully...");
+    router.push(`/dashboard/${res.data.data.name}`);
+    reset();
   });
 
   return (

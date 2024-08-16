@@ -16,10 +16,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { RegisterApi } from "@/helper/api";
 import { RegisterUserType } from "@/types/userType";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter()
   const schema = z.object({
-    name: z.string().min(1, { message: "Required" }),
+    firstname: z.string().min(1, { message: "Required" }),
+    lastname: z.string().min(1, { message: "Required" }),
     email: z.string().email({ message: "Invalid email" }),
     password: z.string().min(8, { message: "Must have at least 8 character" }),
   });
@@ -28,32 +31,66 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await RegisterApi(data as RegisterUserType);
+    const { firstname, lastname, email, password } = data;
+    const dataa = {
+      name: `${firstname} ${lastname}`,
+      email,
+      password,
+    };
+    const res = await RegisterApi(dataa as RegisterUserType);
     if (res?.status != 200) return alert("Error");
     alert("Your account created successfully");
+    reset()
+    router.push("/auth/login")
   });
 
   return (
-    <Card className="w-[400px] mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Create an account</CardTitle>
+    <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
-          Enter your email below to create your account
+          Enter your information to create an account
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+      <CardContent>
+        <form onSubmit={onSubmit}>
+          <div className="grid gap-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="first-name">First name</Label>
+                <Input
+                  id="first-name"
+                  placeholder="Max"
+                  required
+                  {...register("firstname")}
+                />
+                {errors.firstname && (
+                  <p className="text-red-500">
+                    {errors.firstname.message?.toString()}
+                  </p>
+                )}
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="last-name">Last name</Label>
+                <Input
+                  id="last-name"
+                  placeholder="Robinson"
+                  required
+                  {...register("lastname")}
+                />
+                {errors.lastname && (
+                  <p className="text-red-500">
+                    {errors.lastname.message?.toString()}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-          <form onSubmit={onSubmit} className="grid gap-2">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -62,51 +99,33 @@ export default function Register() {
                 placeholder="m@example.com"
                 {...register("email")}
               />
-              {errors?.email?.message && (
-                <p className="text-red-500 font-2xl">
-                  {errors?.email?.message.toString()}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="John Doe"
-                {...register("name")}
-              />
-              {errors?.name?.message && (
+              {errors.email && (
                 <p className="text-red-500">
-                  {errors?.name?.message.toString()}
+                  {errors.email.message?.toString()}
                 </p>
               )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" {...register("password")} />
-              {errors?.password?.message && (
+              {errors.password && (
                 <p className="text-red-500">
-                  {errors?.password?.message.toString()}
+                  {errors.password.message?.toString()}
                 </p>
               )}
             </div>
-            <Button className="w-full mt-5" type="submit">
-              Create account
+            <Button type="submit" className="w-full">
+              Create an account
             </Button>
-          </form>
-        </>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-2">
-        <div>
-          <p>
-            Already have an account?{" "}
-            <Link href="/auth/login" className="underline">
-              Login
-            </Link>
-          </p>
+          </div>
+        </form>
+        <div className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <Link href="/auth/login" className="underline">
+            Sign in
+          </Link>
         </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 }
