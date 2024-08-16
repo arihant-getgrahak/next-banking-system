@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_PRISMA_URL")
+}
+
+model User {
+  id         String   @id @default(cuid()) @map("_id")
+  name       String
+  email      String   @unique
+  password   String
+  account_no String   @unique
+  created_at DateTime @default(now())
+
+  sentTransaction     Transaction[] @relation("SentTransactions")
+  receiverTransaction Transaction[] @relation("ReceivedTransactions")
+}
+
+model Transaction {
+  id                  String          @id @default(cuid()) @map("_id")
+  sender_account_no   String
+  receiver_account_no String
+  amount              Int
+  type                TransactionType @default(IMPS)
+  date                DateTime        @default(now())
+
+  sender   User @relation("SentTransactions", fields: [sender_account_no], references: [id])
+  receiver User @relation("ReceivedTransactions", fields: [receiver_account_no], references: [id])
+}
+
+enum TransactionType {
+  UPI
+  NEFT
+  IMPS
+  RTGS
+}
