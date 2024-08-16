@@ -1,3 +1,3 @@
-import { register, login } from "./auth";
+import { RegisterApi, LoginApi } from "./auth";
 
-export { register, login };
+export {RegisterApi, LoginApi };

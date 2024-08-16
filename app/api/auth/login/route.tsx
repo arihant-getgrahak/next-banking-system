@@ -6,25 +6,25 @@ export async function POST(request: NextRequest) {
   const data = await request.json();
 
   try {
-    const register = await prisma.user.findUnique({
+    const login = await prisma.user.findUnique({
       where: {
         email: data.email,
       },
     });
 
-    if (!register) {
+    if (!login) {
       return NextResponse.json({
         status: 500,
         data: "No user find with this credentials",
       });
     }
-    const pass = await bcrypt.compareSync(data.password, register.password);
+    const pass = await bcrypt.compareSync(data.password, login.password);
     if (!pass)
       return NextResponse.json({
         status: 500,
         data: "Invalid Password!!",
       });
-    return NextResponse.json(register);
+    return NextResponse.json(login);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
