@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-var bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import generateToken from "@/helper/generateToken";
 
 export async function POST(request: NextRequest) {
   const data = await request.json();
+
+console.log(data);
 
   try {
     const login = await prisma.user.findUnique({
       where: {
         email: data.email,
       },
-    });
+    });    
 
     if (!login) {
       return NextResponse.json({
@@ -33,6 +36,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: "Login Successfully",
       data: returnData,
+      token: generateToken(returnData.email),
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

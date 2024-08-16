@@ -1,11 +1,10 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { TokenType } from "@/types/tokenType";
 
-async function generateToken(params: TokenType) {
+export default async function generateToken(email: string) {
   const token = jwt.sign(
     {
-      data: params,
+      data: email,
     },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }

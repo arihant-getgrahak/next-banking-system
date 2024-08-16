@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { LoginUserType, RegisterUserType } from "@/types/userType";
-import { FieldValues } from "react-hook-form";
+
 
 const RegisterApi = async (data: RegisterUserType) => {
   try {
