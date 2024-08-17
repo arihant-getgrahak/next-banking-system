@@ -51,7 +51,7 @@ export function AllTransaction({
           </TableHeader>
           <TableBody>
             {transactionData?.map((data) => (
-              <TableRow>
+              <TableRow key={data.id}>
                 <TableCell>
                   <div className="font-sm">
                     {formatDate(data?.transfer_date)}
