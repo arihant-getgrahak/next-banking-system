@@ -1,19 +1,22 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
-export default async function generateToken(email: string) {
+export default async function generateToken(email: string , id:string) {
   const token = jwt.sign(
     {
-      data: email,
+      data: {
+        email,
+        id
+      },
     },
     process.env.JWT_SECRET!,
-    { expiresIn: "1h" }
+    { expiresIn: "24h" }
   );
 
   cookies().set({
     name: "authCookie",
     value: token,
-    httpOnly: true,
+    // httpOnly: true,
     path: "/",
   });
 }

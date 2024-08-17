@@ -1,16 +1,31 @@
 import { Transaction } from "@prisma/client";
 
 export const totalamountReceived = (data: Transaction[] = []): number => {
-  const totalamountReceived = data.reduce((total, transaction) => {
+  const amountReceived = data.reduce((total, transaction) => {
     return total + transaction.amount;
   }, 0);
 
-  return totalamountReceived;
+  return amountReceived;
 };
 export let totalAmountSent = (data: Transaction[] = []): number => {
-  const totalAmountSent = data.reduce((total, transaction) => {
+  const amountSent = data.reduce((total, transaction) => {
     return total + transaction.amount;
   }, 0);
 
-  return totalAmountSent;
+  return amountSent;
 };
+
+export function totalAmount(
+  transRec: Transaction[] = [],
+  transsent: Transaction[] = []
+) {
+
+  const amountSent = transsent.reduce((total, transaction) => {
+    return total + transaction.amount;
+  }, 0);
+  const amountReceived = transRec.reduce((total, transaction) => {
+    return total + transaction.amount;
+  }, 0);
+
+  return amountReceived - amountSent;
+}

@@ -6,14 +6,12 @@ import generateToken from "@/helper/generateToken";
 export async function POST(request: NextRequest) {
   const data = await request.json();
 
-console.log(data);
-
   try {
     const login = await prisma.user.findUnique({
       where: {
         email: data.email,
       },
-    });    
+    });
 
     if (!login) {
       return NextResponse.json({
@@ -33,10 +31,11 @@ console.log(data);
       password: undefined,
     };
 
+    generateToken(login.email, login.id);
+
     return NextResponse.json({
       message: "Login Successfully",
       data: returnData,
-      token: generateToken(returnData.email),
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

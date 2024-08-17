@@ -9,13 +9,20 @@ export async function GET(
     params: { userId: string };
   }
 ) {
-
   try {
     const result = await prisma.transaction.findMany({
       where: {
-        sender_acc_no: params.userId,
-      }
+        OR: [
+          {
+            sender_acc_no: params.userId,
+          },
+          {
+            receiver_acc_no: params.userId,
+          },
+        ],
+      },
     });
+    
     return NextResponse.json({
       message: "Transaction",
       data: result,

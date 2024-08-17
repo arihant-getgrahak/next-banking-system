@@ -21,7 +21,7 @@ import { Transaction } from "@prisma/client";
 import { DashboardType } from "@/types/userType";
 import Link from "next/link";
 
-export function RecentTransaction({
+export function AllTransaction({
   transactionData,
   userdata,
 }: {
@@ -34,15 +34,9 @@ export function RecentTransaction({
         <div className="grid gap-2">
           <CardTitle>Transactions</CardTitle>
           <CardDescription>
-            Recent transactions from your account.
+            All transactions from your account.
           </CardDescription>
         </div>
-        <Button asChild size="sm" className="ml-auto gap-1">
-          <Link href="/dashboard/transaction">
-            View All
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-        </Button>
       </CardHeader>
       <CardContent>
         <Table>
@@ -57,7 +51,7 @@ export function RecentTransaction({
           </TableHeader>
           <TableBody>
             {transactionData?.map((data) => (
-              <TableRow key={data.id}>
+              <TableRow>
                 <TableCell>
                   <div className="font-sm">
                     {formatDate(data?.transfer_date)}
