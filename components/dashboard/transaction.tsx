@@ -13,18 +13,14 @@ import { totalAmount } from "@/helper/calculatetotalamount";
 export default function TransactionPage() {
   const [userdata, setUserData] = useState<DashboardType>();
   const [transactionData, setTransactionData] = useState<Transaction[]>([]);
-  const [useremail, setUseremail] = useState<string | undefined>();
 
-  function getUserEmail() {
-    const token = getUserInfo() as JwtType;
-    setUseremail(token?.data?.email);
-  }
-
-  async function fetchData() {
-    const res = await DashboardApi("arihantj916@gmail.com");
+  async function fetchData(email: string) {
+    const res = await DashboardApi(email);
     setUserData(res?.data.data);
 
-    await fetchTransaction(res?.data.data?.id);
+    if (res?.data.data?.id) {
+      await fetchTransaction(res?.data.data.id);
+    }
   }
 
   async function fetchTransaction(id: string) {
@@ -33,12 +29,16 @@ export default function TransactionPage() {
   }
 
   useEffect(() => {
-    getUserEmail();
+    async function initialize() {
+      const token = getUserInfo() as JwtType;
+      const email = token?.data?.email;
+      if (email) {
+        await fetchData(email);
+      }
+    }
+    initialize();
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <main className="p-2">
@@ -81,7 +81,8 @@ export default function TransactionPage() {
             <div className="text-2xl font-bold">
               <CardContent>
                 <div className="text-2xl font-bold">
-                  ₹{totalAmount(
+                  ₹
+                  {totalAmount(
                     userdata?.receivedTransaction!,
                     userdata?.sentTransaction!
                   ) || 0}

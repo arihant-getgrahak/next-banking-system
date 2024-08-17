@@ -10,7 +10,7 @@ import { IndianRupee, Users, CreditCard } from "lucide-react";
 export function DashboardCard({ userdata }: { userdata: DashboardType }) {
   return (
     <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-      <Card >
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Account Number</CardTitle>
           <svg
@@ -28,16 +28,22 @@ export function DashboardCard({ userdata }: { userdata: DashboardType }) {
           <div className="text-2xl font-bold">{userdata?.account_no || 0}</div>
         </CardContent>
       </Card>
-      <Card x-chunk="dashboard-01-chunk-0">
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
           <IndianRupee className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">₹{totalAmount(userdata?.receivedTransaction!,userdata?.sentTransaction! ) || 0}</div>
+          <div className="text-2xl font-bold">
+            ₹
+            {totalAmount(
+              userdata?.receivedTransaction!,
+              userdata?.sentTransaction!
+            ) || 0}
+          </div>
         </CardContent>
       </Card>
-      <Card >
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Payment Received
@@ -46,11 +52,11 @@ export function DashboardCard({ userdata }: { userdata: DashboardType }) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            {totalamountReceived(userdata?.receivedTransaction!)}
+            ₹{totalamountReceived(userdata?.receivedTransaction!)}
           </div>
         </CardContent>
       </Card>
-      <Card x-chunk="dashboard-01-chunk-2">
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Payment Sent</CardTitle>
           <CreditCard className="h-4 w-4 text-muted-foreground" />

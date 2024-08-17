@@ -5,6 +5,7 @@ import { Transaction } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { DashboardType } from "@/types/userType";
 import { DashboardCard, RecentTransaction } from "./component";
+import { Overview } from "./component/overview";
 
 export function Dashboard(props: { email: string }) {
   const [userdata, setUserData] = useState<DashboardType>();
@@ -25,7 +26,6 @@ export function Dashboard(props: { email: string }) {
     fetchData();
   }, []);
 
-  
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -35,6 +35,7 @@ export function Dashboard(props: { email: string }) {
             transactionData={transactionData}
             userdata={userdata!}
           />
+          <Overview />
         </div>
       </main>
     </div>
