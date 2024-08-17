@@ -1,4 +1,4 @@
 import { RegisterApi, LoginApi } from "./auth";
-import { DashboardApi } from "./dashboard";
+import { DashboardApi, TransactionApi } from "./dashboard";
 
-export {RegisterApi, LoginApi,DashboardApi };
+export { RegisterApi, LoginApi, DashboardApi, TransactionApi };

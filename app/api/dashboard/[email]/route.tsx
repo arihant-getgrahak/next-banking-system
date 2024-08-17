@@ -6,18 +6,27 @@ export async function GET(
   {
     params,
   }: {
-    params: { name: string };
+    params: { email: string };
   }
 ) {
   try {
-    const dashboard = await prisma.user.findMany({
+    const dashboard = await prisma.user.findUnique({
       where: {
-        name: params.name,
+        email: params.email,
+      },
+      select: {
+        name: true,
+        email: true,
+        account_no: true,
+        id: true,
+        openingBalance: true,
+        sentTransaction: true,
+        receivedTransaction: true,
       },
     });
     return NextResponse.json({
       message: "Dashboard Content",
-      data: dashboard[0],
+      data: dashboard,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

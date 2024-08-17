@@ -38,7 +38,8 @@ export default function Login() {
     const res = await LoginApi(data as LoginUserType);
     if (res?.status != 200) return alert("Error");
     alert("Login Successfully...");
-    router.push(`/dashboard/${res.data.data.name}`);
+    const email = encodeURIComponent(data.email);
+    router.push(`/dashboard/${email}`);
     reset();
   });
 
