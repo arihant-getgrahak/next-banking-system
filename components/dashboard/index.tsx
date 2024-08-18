@@ -6,10 +6,11 @@ import { useState, useEffect } from "react";
 import { DashboardType } from "@/types/userType";
 import { DashboardCard, RecentTransaction } from "./component";
 import { Overview } from "./component/overview";
+import { TransactionType } from "@/types/transactionType";
 
 export function Dashboard(props: { email: string }) {
   const [userdata, setUserData] = useState<DashboardType>();
-  const [transactionData, setTransactionData] = useState<Transaction[]>([]);
+  const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
   async function fetchData() {
     const res = await DashboardApi(props.email);
     setUserData(res?.data.data);
