@@ -8,9 +8,12 @@ import getUserInfo from "@/helper/getuserinfofromtoken";
 import { TransactionType } from "@/types/transactionType";
 import { JwtType } from "@/types/jwtPayload";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { totalAmount } from "@/helper/calculatetotalamount";
+import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function TransactionPage() {
+  if (!checkIsLogin()) {
+    return <h1>Unauthorized</h1>;
+  }
   const [userdata, setUserData] = useState<DashboardType>();
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
 

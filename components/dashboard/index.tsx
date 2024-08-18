@@ -7,8 +7,11 @@ import { DashboardType } from "@/types/userType";
 import { DashboardCard, RecentTransaction } from "./component";
 import { Overview } from "./component/overview";
 import { TransactionType } from "@/types/transactionType";
-
+import { checkIsLogin } from "@/helper/checkAuth";
 export function Dashboard(props: { email: string }) {
+  if (!checkIsLogin()) {
+    return <h1>Unauthorized</h1>;
+  }
   const [userdata, setUserData] = useState<DashboardType>();
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
   async function fetchData() {
@@ -26,7 +29,6 @@ export function Dashboard(props: { email: string }) {
   useEffect(() => {
     fetchData();
   }, []);
-
 
   return (
     <div className="flex min-h-screen w-full flex-col">

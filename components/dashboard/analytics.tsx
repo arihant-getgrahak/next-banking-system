@@ -6,8 +6,12 @@ import { JwtType } from "@/types/jwtPayload";
 import { TransactionType } from "@/types/transactionType";
 import { useState, useEffect } from "react";
 import { Overview } from "./component/overview";
+import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function AnalyticsPage() {
+  if (!checkIsLogin()) {
+    return <h1>Unauthorized</h1>;
+  }
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
 
   async function fetchData(email: string) {

@@ -1,5 +1,8 @@
+import { checkIsLogin } from "@/helper/checkAuth";
+
 export default function DasHome() {
-    return (
-        <h1>Dashboard Home</h1>
-    )
+  if (!checkIsLogin()) {
+    return <h1>Unauthorized</h1>;
+  }
+  return <h1>Dashboard Home</h1>;
 }

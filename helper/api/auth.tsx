@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { LoginUserType, RegisterUserType } from "@/types/userType";
 
-
 const RegisterApi = async (data: RegisterUserType) => {
   try {
     const register = await axios.post("/api/auth/register", data, {
@@ -48,4 +47,23 @@ const LoginApi = async (data: LoginUserType) => {
   }
 };
 
-export { RegisterApi, LoginApi };
+const Logout = async () => {
+  try {
+    const logout = await axios.get("/api/auth/logout");
+    return logout;
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log("Error", error.message);
+    }
+    console.log(error.config);
+  }
+};
+
+export { RegisterApi, LoginApi, Logout };
