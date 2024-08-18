@@ -57,7 +57,7 @@ export function DashboardCard({ userdata }: { userdata: DashboardType }) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
-            {totalAmountSent(userdata?.sentTransaction)}
+            ₹{totalAmountSent(userdata?.sentTransaction)}
           </div>
         </CardContent>
       </Card>

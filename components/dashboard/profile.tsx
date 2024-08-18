@@ -18,7 +18,7 @@ export default function ProfilePage() {
   useEffect(() => {
     async function initialize() {
       const token = getUserInfo() as JwtType;
-      const email = token?.data?.email;
+      const email = token?.data?.id;
       if (email) {
         await fetchData(email);
       }
@@ -29,7 +29,7 @@ export default function ProfilePage() {
   return (
     <main>
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-2 p-4">
-        <ProfileCard userData={userdata!} />
+        {userdata && <ProfileCard userData={userdata} />}
       </div>
     </main>
   );

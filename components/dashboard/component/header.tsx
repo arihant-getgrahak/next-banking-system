@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import {
@@ -11,43 +12,56 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
+import getUserInfo from "@/helper/getuserinfofromtoken";
+import { JwtType } from "@/types/jwtPayload";
 
 export function DashboardHeader() {
+  const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    async function initialize() {
+      const token = getUserInfo() as JwtType;
+      setEmail(token?.data?.email);
+    }
+    initialize();
+  }, []);
+
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="/dashboard"
+          href={`/dashboard/${email}`}
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Package2 className="h-6 w-6" />
         </Link>
         <Link
-          href="/dashboard"
+          href={`/dashboard/${email}`}
           className="text-foreground transition-colors hover:text-foreground"
         >
           Dashboard
         </Link>
         <Link
-          href="/dashboard"
+          href={`/dashboard/profile`}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Profile
         </Link>
         <Link
-          href="/dashboard/transaction"
+          href={`/dashboard/transaction`}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Transaction
         </Link>
         <Link
-          href="/dashboard"
+          href={`/dashboard/analytics`}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Analytics
         </Link>
         <Link
-          href="/dashboard"
+          href={`/dashboard/settings`}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Settings
@@ -64,35 +78,38 @@ export function DashboardHeader() {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="/dashboard"
+              href={`/dashboard/${email}`}
               className="flex items-center gap-2 text-lg font-semibold"
             >
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link href="/dashboard" className="hover:text-foreground">
+            <Link
+              href={`/dashboard/${email}`}
+              className="hover:text-foreground"
+            >
               Dashboard
             </Link>
             <Link
-              href="/dashboard"
+              href={`/dashboard/profile`}
               className="text-muted-foreground hover:text-foreground"
             >
               Profile
             </Link>
             <Link
-              href="/dashboard/transaction"
+              href={`/dashboard/transaction`}
               className="text-muted-foreground hover:text-foreground"
             >
               Transaction
             </Link>
             <Link
-              href="/dashboard"
+              href={`/dashboard/analytics}`}
               className="text-muted-foreground hover:text-foreground"
             >
               Analytics
             </Link>
             <Link
-              href="/dashboard"
+              href={`/dashboard/settings`}
               className="text-muted-foreground hover:text-foreground"
             >
               Settings

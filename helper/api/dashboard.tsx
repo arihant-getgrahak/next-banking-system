@@ -39,9 +39,37 @@ const TransactionApi = async (data: any) => {
   }
 };
 
+// Update Profile
+
 const updateProfile = async (email: string, data: updateProfileType) => {
+  console.log(data);
   try {
-    const profile = await axios.patch(`/api/dashboard/${email}`, data, {
+    const profile = await axios.put(`/api/dashboard/${email}`, data);
+
+    return profile;
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response) {
+      console.log("err1", error.response.data);
+      console.log("err2", error.response.status);
+      console.log("err3", error.response.headers);
+    } else if (error.request) {
+      console.log("err4", error.request);
+    } else {
+      console.log("Error", error.message);
+    }
+    console.log("err5", error.config);
+  }
+};
+
+// update password
+
+const updatePassword = async (
+  email: string,
+  password: { old: string; new: string }
+) => {
+  try {
+    const profile = await axios.patch(`/api/dashboard/${email}`, password, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,4 +90,4 @@ const updateProfile = async (email: string, data: updateProfileType) => {
   }
 };
 
-export { DashboardApi, TransactionApi, updateProfile };
+export { DashboardApi, TransactionApi, updateProfile, updatePassword };
