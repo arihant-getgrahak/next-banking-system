@@ -14,12 +14,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { updateProfile } from "@/helper/api/dashboard";
 
-const schema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
-  name: z.string().min(3, { message: "Name must have at least 3 characters" }),
-});
 
 export default function ProfileCard({ userData }: { userData: User }) {
+  const schema = z.object({
+    email: z.string().email({ message: "Invalid email" }),
+    name: z.string().min(3, { message: "Name must have at least 3 characters" }),
+  });
   const {
     register,
     handleSubmit,
@@ -60,18 +60,18 @@ export default function ProfileCard({ userData }: { userData: User }) {
       </CardHeader>
       <CardContent>
         <form className="grid gap-4" onSubmit={onSubmit}>
-          <div className="flex gap-2 items-center justify-center">
+        <div className="flex flex-col md:flex-row gap-4 space-y-1 items-center justify-center ">
             <Label>Account Number</Label>
             <Input value={userData?.account_no} disabled />
           </div>
-          <div className="flex gap-4 space-y-1 items-center justify-center">
+          <div className="flex flex-col md:flex-row gap-4 space-y-1 items-center justify-center ">
             <Label>Name</Label>
             <Input {...register("name")} />
             {errors.name && (
               <p className="text-red-500">{errors.name.message?.toString()}</p>
             )}
           </div>
-          <div className="flex gap-4 space-y-1 items-center justify-center">
+          <div className="flex flex-col md:flex-row gap-4 space-y-1 items-center justify-center ">
             <Label>Email</Label>
             <Input {...register("email")} />
             {errors.email && (

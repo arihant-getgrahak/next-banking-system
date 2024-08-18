@@ -31,7 +31,7 @@ export default function TransactionPage() {
   useEffect(() => {
     async function initialize() {
       const token = getUserInfo() as JwtType;
-      const email = token?.data?.email;
+      const email = token?.data?.id;
       if (email) {
         await fetchData(email);
       }

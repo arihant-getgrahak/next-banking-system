@@ -1,7 +1,20 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
-
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { AggregatedDataType, TransactionType } from "@/types/formatData";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { processData } from "@/helper/processData";
+import { useState, useEffect } from "react";
 
 const data = [
   {
@@ -54,33 +67,33 @@ const data = [
   },
 ];
 
-export function Overview() {
+export function Overview({
+  transactionData,
+}: {
+  transactionData: TransactionType[];
+}) {
+  const [data, setData] = useState<AggregatedDataType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await processData(transactionData);
+      setData(result);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Card>
       <CardContent className="grid gap-8 p-4">
-        <ResponsiveContainer height={350}>
-          <BarChart data={data}>
-            <XAxis
-              dataKey="name"
-              stroke="#888888"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              stroke="#888888"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              tickFormatter={(value) => `$${value}`}
-            />
-            <Bar
-              dataKey="total"
-              fill="currentColor"
-              radius={[4, 4, 0, 0]}
-              className="fill-primary"
-            />
-          </BarChart>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart width={500} height={300} data={data}>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+            <Line type="monotone" dataKey="credit" stroke="#8884d8" />
+            <Line type="monotone" dataKey="debit" stroke="#82ca9d" />
+          </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

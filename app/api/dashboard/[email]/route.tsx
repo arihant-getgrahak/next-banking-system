@@ -40,67 +40,113 @@ export async function GET(
   }
 }
 
+// export async function PATCH(
+//   request: NextRequest,
+//   {
+//     params,
+//   }: {
+//     params: { email: string };
+//   }
+// ) {
+//   try {
+//     let data;
+//     try {
+//       data = await request.json();
+//     } catch (err: any) {
+//       return NextResponse.json(
+//         { error: "Please provide some data..." },
+//         { status: 500 }
+//       );
+//     }
+
+//     console.log("data: ", data.new);
+//     const CheckIsUserExist = await prisma.user.findUnique({
+//       where: {
+//         id: params.email,
+//       },
+//     });
+
+//     if (!CheckIsUserExist)
+//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+//     const pass = bcrypt.compareSync(data.old, CheckIsUserExist.password);
+
+//     if (!pass)
+//       return NextResponse.json({ error: "Invalid Password" }, { status: 404 });
+
+//     var salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT!));
+//     var hash = bcrypt.hashSync(data.new, salt);
+
+//     data.password.new = hash;
+
+//     const updatePass = await prisma.user.update({
+//       where: {
+//         email: params.email,
+//       },
+//       data: {
+//         password: hash,
+//       },
+//     });
+
+//     if (!updatePass)
+//       return NextResponse.json(
+//         { error: "Error updating password" },
+//         { status: 500 }
+//       );
+
+//     await deleteToken();
+//     return NextResponse.json(
+//       {
+//         message: "Password Updated",
+//         data: updatePass,
+//       },
+//       { status: 200 }
+//     );
+//   } catch (error: any) {
+//     return NextResponse.json({ error: error.message }, { status: 500 });
+//   }
+// }
+
 export async function PATCH(
   request: NextRequest,
-  {
-    params,
-  }: {
-    params: { email: string };
-  }
+  { params }: { params: { email: string } }
 ) {
   try {
-    let data;
-    try {
-      data = await request.json();
-    } catch (err: any) {
-      return NextResponse.json(
-        { error: "Please provide some data..." },
-        { status: 500 }
-      );
-    }
-    const CheckIsUserExist = await prisma.user.findUnique({
-      where: {
-        email: params.email,
-      },
+    const data = await request.json();
+
+    const user = await prisma.user.findUnique({
+      where: { id: params.email },
     });
 
-    if (!CheckIsUserExist)
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
-    const pass = bcrypt.compareSync(
-      data.password.old,
-      CheckIsUserExist.password
-    );
+    const isPasswordValid = bcrypt.compareSync(data.old, user.password);
 
-    if (!pass)
-      return NextResponse.json({ error: "Invalid Password" }, { status: 404 });
+    if (!isPasswordValid) {
+      return NextResponse.json({ error: "Invalid Password" }, { status: 400 });
+    }
 
-    var salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT!));
-    var hash = bcrypt.hashSync(data.password.new, salt);
+    const salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT!));
+    const hashedPassword = bcrypt.hashSync(data.new, salt);
 
-    data.password.new = hash;
-
-    const updatePass = await prisma.user.update({
-      where: {
-        email: params.email,
-      },
-      data: {
-        password: hash,
-      },
+    const updatedUser = await prisma.user.update({
+      where: { id: params.email },
+      data: { password: hashedPassword },
     });
 
-    if (!updatePass)
+    if (!updatedUser) {
       return NextResponse.json(
         { error: "Error updating password" },
         { status: 500 }
       );
+    }
 
     await deleteToken();
+
     return NextResponse.json(
-      {
-        message: "Password Updated",
-        data: updatePass,
-      },
+      { message: "Password Updated", data: updatedUser },
       { status: 200 }
     );
   } catch (error: any) {
