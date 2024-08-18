@@ -1,12 +1,12 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
-export default async function generateToken(email: string , id:string) {
+export async function generateToken(email: string, id: string) {
   const token = jwt.sign(
     {
       data: {
         email,
-        id
+        id,
       },
     },
     process.env.JWT_SECRET!,
@@ -20,3 +20,13 @@ export default async function generateToken(email: string , id:string) {
     path: "/",
   });
 }
+
+export async function deleteToken() {
+  cookies().delete("authCookie");
+  return true;
+}
+
+export default {
+  generateToken,
+  deleteToken,
+};

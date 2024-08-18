@@ -17,7 +17,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
-import { Transaction } from "@prisma/client";
+import {TransactionType} from "@/types/transactionType";
 import { DashboardType } from "@/types/userType";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export function RecentTransaction({
   transactionData,
   userdata,
 }: {
-  transactionData: Transaction[];
+  transactionData: TransactionType[];
   userdata: DashboardType;
 }) {
   return (
@@ -60,10 +60,10 @@ export function RecentTransaction({
               <TableRow key={data.id}>
                 <TableCell>
                   <div className="font-sm">
-                    {formatDate(data?.transfer_date)}
+                    {formatDate(data?.date)}
                   </div>
                   <div className="font-medium">
-                    {data.type + "/" + userdata?.name + "/" + data.id}
+                    {data.type + "/" + userdata?.name + "/" + data.acc_no}
                   </div>
                   <div className="hidden text-sm text-muted-foreground md:inline">
                     {data.type + "-" + data.id}
@@ -71,7 +71,7 @@ export function RecentTransaction({
                 </TableCell>
 
                 <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                  {formatDate(data.transfer_date)}
+                  {formatDate(data.date)}
                 </TableCell>
                 {data.method === "CREDIT" ? (
                   <TableCell className="text-right">

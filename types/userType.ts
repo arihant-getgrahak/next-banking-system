@@ -1,4 +1,4 @@
-import { User,Transaction } from "@prisma/client";
+import { User, Transaction } from "@prisma/client";
 
 export type RegisterUserType = {
   email: string;
@@ -17,3 +17,9 @@ export type DashboardUserType = {
 };
 
 export type DashboardType = User & DashboardUserType;
+
+export type updateProfileType = {
+  name?: string;
+  email?: string;
+  password?: string;
+};

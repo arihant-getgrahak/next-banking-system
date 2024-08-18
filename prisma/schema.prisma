@@ -8,15 +8,15 @@ datasource db {
 }
 
 model User {
-  id               String   @id @default(cuid()) @map("_id")
-  name             String
-  email            String   @unique
-  password         String
-  account_no       String   @unique
-  created_at       DateTime @default(now())
-  updated_at       DateTime @default(now())
-  openingBalance   Int      @default(0)
-  closeningBalance Int      @default(0)
+  id             String   @id @default(cuid()) @map("_id")
+  name           String
+  email          String   @unique
+  password       String
+  account_no     String   @unique
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  openingBalance Int      @default(0)
+  currentBalance Float      @default(0)
 
   sentTransaction     Transaction[] @relation("SentTransactions")
   receivedTransaction Transaction[] @relation("ReceivedTransactions")
@@ -31,8 +31,12 @@ model Transaction {
   transfer_date   DateTime          @default(now())
   method          TransactionMethod @default(CREDIT)
 
-  sender   User @relation("SentTransactions", fields: [sender_acc_no], references: [id])
-  receiver User @relation("ReceivedTransactions", fields: [receiver_acc_no], references: [id])
+  sender   User @relation("SentTransactions", fields: [sender_acc_no], references: [account_no])
+  receiver User @relation("ReceivedTransactions", fields: [receiver_acc_no], references: [account_no])
+
+  @@index([sender_acc_no])
+  @@index([receiver_acc_no])
+  @@index([type])
 }
 
 enum TransactionType {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import generateToken from "@/helper/generateToken";
+import { generateToken } from "@/helper/TokenHelper";
 
 export async function POST(request: NextRequest) {
   const data = await request.json();

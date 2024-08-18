@@ -14,17 +14,20 @@ export function Dashboard(props: { email: string }) {
     const res = await DashboardApi(props.email);
     setUserData(res?.data.data);
 
-    await fetchTransaction(res?.data.data?.id);
+    await fetchTransaction(res?.data.data?.account_no);
   }
 
-  async function fetchTransaction(id: string) {
-    const res = await TransactionApi(id);
+  async function fetchTransaction(account_no: string) {
+    const res = await TransactionApi(account_no);
     setTransactionData(res?.data.data);
   }
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // console.log("userData: ", userdata?.sentTransaction);
+  // console.log("userData R: ", userdata?.receivedTransaction);
 
   return (
     <div className="flex min-h-screen w-full flex-col">
