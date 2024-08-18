@@ -5,26 +5,26 @@ import { AllTransaction } from "./component/alltrans";
 import { DashboardType } from "@/types/userType";
 import { DashboardApi, TransactionApi } from "@/helper/api";
 import getUserInfo from "@/helper/getuserinfofromtoken";
-import { Transaction } from "@prisma/client";
+import { TransactionType } from "@/types/transactionType";
 import { JwtType } from "@/types/jwtPayload";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { totalAmount } from "@/helper/calculatetotalamount";
 
 export default function TransactionPage() {
   const [userdata, setUserData] = useState<DashboardType>();
-  const [transactionData, setTransactionData] = useState<Transaction[]>([]);
+  const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
 
   async function fetchData(email: string) {
     const res = await DashboardApi(email);
     setUserData(res?.data.data);
 
     if (res?.data.data?.id) {
-      await fetchTransaction(res?.data.data.id);
+      await fetchTransaction(res?.data.data.account_no);
     }
   }
 
-  async function fetchTransaction(id: string) {
-    const res = await TransactionApi(id);
+  async function fetchTransaction(account_no: string) {
+    const res = await TransactionApi(account_no);
     setTransactionData(res?.data.data);
   }
 
@@ -38,7 +38,6 @@ export default function TransactionPage() {
     }
     initialize();
   }, []);
-
 
   return (
     <main className="p-2">
@@ -81,11 +80,7 @@ export default function TransactionPage() {
             <div className="text-2xl font-bold">
               <CardContent>
                 <div className="text-2xl font-bold">
-                  ₹
-                  {totalAmount(
-                    userdata?.receivedTransaction!,
-                    userdata?.sentTransaction!
-                  ) || 0}
+                  ₹{userdata?.currentBalance}
                 </div>
               </CardContent>
             </div>
