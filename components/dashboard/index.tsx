@@ -27,8 +27,6 @@ export function Dashboard(props: { email: string }) {
     fetchData();
   }, []);
 
-  // console.log("userData: ", userdata?.sentTransaction);
-  // console.log("userData R: ", userdata?.receivedTransaction);
 
   return (
     <div className="flex min-h-screen w-full flex-col">

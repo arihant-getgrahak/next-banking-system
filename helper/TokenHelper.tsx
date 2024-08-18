@@ -12,7 +12,6 @@ export async function generateToken(email: string, id: string) {
     process.env.JWT_SECRET!
   );
 
-  console.log(token);
 
   await cookies().set({
     name: "authCookie",

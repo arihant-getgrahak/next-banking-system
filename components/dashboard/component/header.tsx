@@ -61,10 +61,10 @@ export function DashboardHeader() {
           Analytics
         </Link>
         <Link
-          href={`/dashboard/settings`}
+          href={`/dashboard/transfer`}
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
-          Settings
+          Fund Transfer
         </Link>
       </nav>
       {/* Hamburger Menu */}
@@ -109,10 +109,10 @@ export function DashboardHeader() {
               Analytics
             </Link>
             <Link
-              href={`/dashboard/settings`}
+              href={`/dashboard/transfer`}
               className="text-muted-foreground hover:text-foreground"
             >
-              Settings
+              Fund Transfer
             </Link>
           </nav>
         </SheetContent>

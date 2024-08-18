@@ -33,14 +33,12 @@ export default function TransactionPage() {
       const token = getUserInfo() as JwtType;
       const email = token?.data?.email;
 
-      console.log(token);
       if (email) {
         await fetchData(email);
       }
     }
     initialize();
   }, []);
-
 
   return (
     <main className="p-2">
