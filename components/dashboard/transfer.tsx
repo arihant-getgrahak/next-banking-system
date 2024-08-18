@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardApi, TransactionApi } from "@/helper/api";
+import { DashboardApi } from "@/helper/api";
 import getUserInfo from "@/helper/getuserinfofromtoken";
 import { JwtType } from "@/types/jwtPayload";
 import { DashboardType } from "@/types/userType";
