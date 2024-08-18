@@ -39,7 +39,7 @@ export function Dashboard(props: { email: string }) {
             transactionData={transactionData}
             userdata={userdata!}
           />
-          <Overview />
+          <Overview transactionData={transactionData} />
         </div>
       </main>
     </div>

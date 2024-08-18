@@ -3,7 +3,7 @@
 import { DashboardApi, TransactionApi } from "@/helper/api";
 import getUserInfo from "@/helper/getuserinfofromtoken";
 import { JwtType } from "@/types/jwtPayload";
-import { TransactionType } from "@/types/formatData";
+import { TransactionType } from "@/types/transactionType";
 import { useState, useEffect } from "react";
 import { Overview } from "./component/overview";
 
@@ -25,9 +25,9 @@ export default function AnalyticsPage() {
   useEffect(() => {
     async function initialize() {
       const token = getUserInfo() as JwtType;
-      const email = token?.data?.id;
-      if (email) {
-        await fetchData(email);
+      const id = token?.data?.id;
+      if (id) {
+        await fetchData(id);
       }
     }
     initialize();

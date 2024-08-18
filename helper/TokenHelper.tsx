@@ -2,18 +2,19 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
 export async function generateToken(email: string, id: string) {
-  const token = jwt.sign(
+  const token = await jwt.sign(
     {
       data: {
         email,
         id,
       },
     },
-    process.env.JWT_SECRET!,
-    { expiresIn: "24h" }
+    process.env.JWT_SECRET!
   );
 
-  cookies().set({
+  console.log(token);
+
+  await cookies().set({
     name: "authCookie",
     value: token,
     // httpOnly: true,
@@ -25,8 +26,3 @@ export async function deleteToken() {
   cookies().delete("authCookie");
   return true;
 }
-
-export default {
-  generateToken,
-  deleteToken,
-};

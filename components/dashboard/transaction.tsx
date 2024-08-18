@@ -18,7 +18,7 @@ export default function TransactionPage() {
     const res = await DashboardApi(email);
     setUserData(res?.data.data);
 
-    if (res?.data.data?.id) {
+    if (res?.data.data?.account_no) {
       await fetchTransaction(res?.data.data.account_no);
     }
   }
@@ -31,13 +31,16 @@ export default function TransactionPage() {
   useEffect(() => {
     async function initialize() {
       const token = getUserInfo() as JwtType;
-      const email = token?.data?.id;
+      const email = token?.data?.email;
+
+      console.log(token);
       if (email) {
         await fetchData(email);
       }
     }
     initialize();
   }, []);
+
 
   return (
     <main className="p-2">

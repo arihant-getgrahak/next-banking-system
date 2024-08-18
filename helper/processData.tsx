@@ -1,18 +1,32 @@
-import { AggregatedDataType, TransactionType } from "@/types/formatData";
+import { AggregatedDataType } from "@/types/formatData";
+import { TransactionType } from "@/types/transactionType";
 
-type dataMap = Record<string, AggregatedDataType>;
-export async function processData(transaction: TransactionType[]) {
-  const dataMap: dataMap = {};
+type DataMap = Record<string, AggregatedDataType>;
 
-  transaction.forEach((transaction) => {
-    const { date, type, amount } = transaction;
+export async function processData(
+  transactions: TransactionType[]
+): Promise<AggregatedDataType[]> {
+  const dataMap: DataMap = {};
 
-    if (!dataMap[date]) {
-      dataMap[date] = { date, credit: 0, debit: 0 };
+  transactions.forEach((transaction) => {
+    const { date, method, amount } = transaction;
+
+    // Ensure amount is a valid number
+    if (typeof amount !== "number" || isNaN(amount)) {
+      console.warn(`Invalid amount value: ${amount}`);
+      return;
     }
 
-    if (type === "credit" || type === "debit") {
-      dataMap[date][type] += amount;
+    const dateString = new Date(date).toISOString().split("T")[0];
+
+    if (!dataMap[dateString]) {
+      dataMap[dateString] = { date: dateString, CREDIT: 0, DEBIT: 0 };
+    }
+
+    if (method === "CREDIT" || method === "DEBIT") {
+      dataMap[dateString][method] += amount;
+    } else {
+      console.warn(`Unknown transaction method: ${method}`);
     }
   });
 

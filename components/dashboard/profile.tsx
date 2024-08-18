@@ -19,9 +19,9 @@ export default function ProfilePage() {
   useEffect(() => {
     async function initialize() {
       const token = getUserInfo() as JwtType;
-      const email = token?.data?.id;
-      if (email) {
-        await fetchData(email);
+      const id= token?.data?.id;
+      if (id) {
+        await fetchData(id);
       }
     }
     initialize();

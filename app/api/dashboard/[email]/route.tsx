@@ -8,7 +8,7 @@ export async function GET(
   {
     params,
   }: {
-    params: { email: string; id: string };
+    params: { email: string };
   }
 ) {
   try {
