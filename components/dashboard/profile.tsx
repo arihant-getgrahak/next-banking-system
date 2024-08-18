@@ -10,9 +10,7 @@ import UpdatePass from "./component/updatePass";
 import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function ProfilePage() {
-  if (!checkIsLogin()) {
-    return <h1>Unauthorized</h1>;
-  }
+  const isLogin = checkIsLogin();
   const [userdata, setUserData] = useState<User>();
 
   async function fetchData(email: string) {
@@ -30,6 +28,10 @@ export default function ProfilePage() {
     }
     initialize();
   }, []);
+
+  if (!isLogin) {
+    return <h1>Unauthorized</h1>;
+  }
 
   return (
     <main>

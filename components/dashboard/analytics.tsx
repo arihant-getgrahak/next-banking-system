@@ -9,9 +9,7 @@ import { Overview } from "./component/overview";
 import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function AnalyticsPage() {
-  if (!checkIsLogin()) {
-    return <h1>Unauthorized</h1>;
-  }
+  const isLogin = checkIsLogin();
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
 
   async function fetchData(email: string) {
@@ -36,6 +34,10 @@ export default function AnalyticsPage() {
     }
     initialize();
   }, []);
+
+  if (!isLogin) {
+    return <h1>Unauthorized</h1>;
+  }
 
   return (
     <main>

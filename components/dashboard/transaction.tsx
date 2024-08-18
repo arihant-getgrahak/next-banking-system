@@ -11,9 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function TransactionPage() {
-  if (!checkIsLogin()) {
-    return <h1>Unauthorized</h1>;
-  }
+  const isLogin = checkIsLogin();
   const [userdata, setUserData] = useState<DashboardType>();
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
 
@@ -42,6 +40,10 @@ export default function TransactionPage() {
     }
     initialize();
   }, []);
+
+  if (!isLogin) {
+    return <h1>Unauthorized</h1>;
+  }
 
   return (
     <main className="p-2">

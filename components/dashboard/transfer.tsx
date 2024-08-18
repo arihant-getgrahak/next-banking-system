@@ -9,9 +9,7 @@ import TransferCard from "./component/transferCard";
 import { checkIsLogin } from "@/helper/checkAuth";
 
 export default function TransferPage() {
-  if (!checkIsLogin()) {
-    return <h1>Unauthorized</h1>;
-  }
+  const isLogin = checkIsLogin();
   const [userdata, setUserData] = useState<DashboardType>();
 
   async function fetchData(email: string) {
@@ -29,5 +27,9 @@ export default function TransferPage() {
     }
     initialize();
   }, []);
+
+  if (!isLogin) {
+    return <h1>Unauthorized</h1>;
+  }
   return userdata && <TransferCard userData={userdata} />;
 }
