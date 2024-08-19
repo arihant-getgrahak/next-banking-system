@@ -1,6 +1,5 @@
 import { EmailTemplate } from "@/components/emailTemplate";
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
 import { generateOTP } from "@/helper/generateRandomNumber";
 import prisma from "@/lib/prisma";
 import { isDateExpired } from "@/helper/checkOtpExp";
