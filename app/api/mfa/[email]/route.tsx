@@ -4,8 +4,9 @@ import { Resend } from "resend";
 import { generateOTP } from "@/helper/generateRandomNumber";
 import prisma from "@/lib/prisma";
 import { isDateExpired } from "@/helper/checkOtpExp";
+import axios from "axios";
 
-const resend = new Resend(process.env.RESEND_API?.toString());
+
 
 export async function GET(
   req: NextRequest,
@@ -20,8 +21,34 @@ export async function GET(
     }
 
     const otp = generateOTP();
+    var data = {
+      service_id: "service_6qypzpj",
+      template_id: "template_uubf86m",
+      user_id: "H1WprcdwjNEPDR2V_",
+      template_params: {
+        email: params.email,
+        otp: otp,
+      },
+    };
 
-    const Expdate = new Date(Date.now() + 1000 * 60 * 5);
+    const res = await axios.post(
+      "https://api.emailjs.com/api/v1.0/email/send",
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res)
+      return NextResponse.json(
+        { error: "error sending email" },
+        { status: 500 }
+      );
+
+    // save Otp to DB
+    const Expdate = new Date(Date.now());
     const saveOtp = await prisma.otp.create({
       data: {
         user_otp: params.email,
@@ -31,17 +58,6 @@ export async function GET(
     });
     if (!saveOtp)
       return NextResponse.json({ error: "error saving OTP" }, { status: 500 });
-
-    const { data, error } = await resend.emails.send({
-      from: "Arihant <email-verfication@resend.dev>",
-      to: [params.email],
-      subject: "Otp for Email Verification",
-      react: EmailTemplate({ OTP: parseInt(otp) }),
-    });
-
-    if (error) {
-      return NextResponse.json({ error: error }, { status: 500 });
-    }
 
     return NextResponse.json(
       { data: "Please Check your email for the OTP" },

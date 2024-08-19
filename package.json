@@ -10,6 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -41,7 +42,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "recharts": "^2.12.7",
-    "resend": "^4.0.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
