@@ -55,8 +55,6 @@ export default function TransferCard({ userData }: { userData: User }) {
     const res = await transferFund(sendData as FundTransfer);
     if (res?.status != 200) return alert("Error");
     alert("Fund Transfer Successful");
-    //     const email = encodeURIComponent(data.email);
-    //     router.push(`/dashboard/${email}`);
     reset();
   });
   return (
@@ -102,15 +100,15 @@ export default function TransferCard({ userData }: { userData: User }) {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="type">Amount</Label>
+              <Label htmlFor="type">Type of Transfer</Label>
               <Controller
                 name="type"
                 control={control}
-                defaultValue="IMPS" // or any default value you prefer
+                defaultValue="IMPS"
                 render={({ field }) => (
                   <Select
                     {...field}
-                    onValueChange={(value) => field.onChange(value)} // Handle the value change
+                    onValueChange={(value) => field.onChange(value)} 
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="IMPS" />
