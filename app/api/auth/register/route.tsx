@@ -27,8 +27,6 @@ export async function POST(request: NextRequest) {
         email: email,
       },
     });
-
-    console.log(checkExistingUser);
     
 
     if (checkExistingUser)

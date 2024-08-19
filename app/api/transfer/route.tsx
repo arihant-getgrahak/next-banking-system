@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error("Transaction failed:", err);
     return NextResponse.json(
-      { error: "Transaction failed. Please try again later." },
+      { data: "Transaction failed. Please try again later." },
       { status: 500 }
     );
   }

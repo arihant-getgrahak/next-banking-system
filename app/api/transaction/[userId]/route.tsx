@@ -58,6 +58,6 @@ export async function GET(
       data: formattedTransactions,
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ data: err.message }, { status: 500 });
   }
 }

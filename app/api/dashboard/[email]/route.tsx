@@ -29,7 +29,7 @@ export async function GET(
     });
 
     if (!dashboard)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ data: "User not found" }, { status: 404 });
 
     return NextResponse.json({
       message: "Dashboard Content",
@@ -55,13 +55,13 @@ export async function PATCH(
     });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ data: "User not found" }, { status: 404 });
     }
 
     const isPasswordValid = bcrypt.compareSync(data.old, user.password);
 
     if (!isPasswordValid) {
-      return NextResponse.json({ error: "Invalid Password" }, { status: 400 });
+      return NextResponse.json({ data: "Invalid Password" }, { status: 400 });
     }
 
     const salt = bcrypt.genSaltSync(parseInt(process.env.BCRYPT_SALT!));
@@ -74,7 +74,7 @@ export async function PATCH(
 
     if (!updatedUser) {
       return NextResponse.json(
-        { error: "Error updating password" },
+        { data: "Error updating password" },
         { status: 500 }
       );
     }
@@ -85,8 +85,8 @@ export async function PATCH(
       { message: "Password Updated", data: updatedUser },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (data: any) {
+    return NextResponse.json({ data: data.message }, { status: 500 });
   }
 }
 
@@ -104,7 +104,7 @@ export async function PUT(
       data = await request.json();
     } catch (err: any) {
       return NextResponse.json(
-        { error: "Please provide some data..." },
+        { data: "Please provide some data..." },
         { status: 500 }
       );
     }
@@ -115,7 +115,7 @@ export async function PUT(
     });
 
     if (!CheckIsUserExist)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ data: "User not found" }, { status: 404 });
 
     const updateUser = await prisma.user.update({
       where: {
@@ -126,7 +126,7 @@ export async function PUT(
 
     if (!updateUser)
       return NextResponse.json(
-        { error: "Error updating user name" },
+        { data: "Error updating user name" },
         { status: 500 }
       );
 
@@ -137,7 +137,7 @@ export async function PUT(
       },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (data: any) {
+    return NextResponse.json({ data: data.message }, { status: 500 });
   }
 }
