@@ -10,7 +10,6 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
     "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.18.0",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -32,6 +31,7 @@
     "cmdk": "1.0.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.28",
+    "input-otp": "^1.2.4",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "8.5.1",
     "lucide-react": "^0.427.0",

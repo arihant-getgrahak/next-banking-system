@@ -32,8 +32,8 @@ model Transaction {
   transfer_date   DateTime          @default(now())
   method          TransactionMethod @default(CREDIT)
 
-  sender   User @relation("SentTransactions", fields: [sender_acc_no], references: [account_no])
-  receiver User @relation("ReceivedTransactions", fields: [receiver_acc_no], references: [account_no])
+  sender   User @relation("SentTransactions", fields: [sender_acc_no], references: [account_no], onDelete: Cascade)
+  receiver User @relation("ReceivedTransactions", fields: [receiver_acc_no], references: [account_no], onDelete: Cascade)
 
   @@index([sender_acc_no])
   @@index([receiver_acc_no])
@@ -45,7 +45,7 @@ model Otp {
   otp      String?
   otpExp   DateTime
   user_otp String
-  sender   User     @relation(fields: [user_otp], references: [email])
+  sender   User     @relation(fields: [user_otp], references: [email], onDelete: Cascade)
 }
 
 enum TransactionType {

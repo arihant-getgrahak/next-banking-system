@@ -44,7 +44,10 @@ export default function Register() {
       password,
     };
     const res = await RegisterApi(dataa as RegisterUserType);
-    if (res?.status != 200) return alert("Error");
+       if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    } 
     alert("Your account created successfully");
     reset()
     router.push("/auth/login")

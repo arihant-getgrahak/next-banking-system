@@ -14,6 +14,10 @@ export function Dashboard(props: { email: string }) {
   const [transactionData, setTransactionData] = useState<TransactionType[]>([]);
   async function fetchData() {
     const res = await DashboardApi(props.email);
+       if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    } 
     setUserData(res?.data.data);
 
     await fetchTransaction(res?.data.data?.account_no);
@@ -21,6 +25,10 @@ export function Dashboard(props: { email: string }) {
 
   async function fetchTransaction(account_no: string) {
     const res = await TransactionApi(account_no);
+       if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    } 
     setTransactionData(res?.data.data);
   }
 

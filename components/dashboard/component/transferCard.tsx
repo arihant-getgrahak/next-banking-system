@@ -29,8 +29,8 @@ export default function TransferCard({ userData }: { userData: User }) {
     receiver_acc_no: z
       .string()
       .min(10, { message: "Must have at least 10 characters" })
-      .max(12, { message: "Must have at most 12 characters" })
-      ,amount: z.string().transform((value) => parseFloat(value)),
+      .max(12, { message: "Must have at most 12 characters" }),
+    amount: z.string().transform((value) => parseFloat(value)),
     type: z.string(),
   });
 
@@ -53,7 +53,10 @@ export default function TransferCard({ userData }: { userData: User }) {
     };
 
     const res = await transferFund(sendData as FundTransfer);
-    if (res?.status != 200) return alert("Error");
+    if (res?.status != 200) {
+      alert(res?.data.error);
+      return;
+    }
     alert("Fund Transfer Successful");
     reset();
   });
@@ -108,7 +111,7 @@ export default function TransferCard({ userData }: { userData: User }) {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    onValueChange={(value) => field.onChange(value)} 
+                    onValueChange={(value) => field.onChange(value)}
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="IMPS" />

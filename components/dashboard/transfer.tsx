@@ -14,6 +14,12 @@ export default function TransferPage() {
 
   async function fetchData(email: string) {
     const res = await DashboardApi(email);
+    if (res?.status != 200) {
+      {
+        console.log(res?.data.data);
+        return;
+      }
+    }
     setUserData(res?.data.data);
   }
 

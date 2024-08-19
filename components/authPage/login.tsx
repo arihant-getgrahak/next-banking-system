@@ -36,10 +36,13 @@ export default function Login() {
 
   const onSubmit = handleSubmit(async (data) => {
     const res = await LoginApi(data as LoginUserType);
-    if (res?.status != 200) return alert("Error");
+    if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    }
     alert("Login Successfully...");
     const email = encodeURIComponent(data.email);
-    router.push(`/dashboard/${email}`);
+    router.push(`/auth/verify?email=${email}`);
     reset();
   });
 

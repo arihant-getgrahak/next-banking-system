@@ -17,7 +17,11 @@ export default function TransactionPage() {
 
   async function fetchData(email: string) {
     const res = await DashboardApi(email);
-    setUserData(res?.data.data);
+    setUserData(res?.data.data);       
+       if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    } 
 
     if (res?.data.data?.account_no) {
       await fetchTransaction(res?.data.data.account_no);
@@ -25,7 +29,11 @@ export default function TransactionPage() {
   }
 
   async function fetchTransaction(account_no: string) {
-    const res = await TransactionApi(account_no);
+    const res = await TransactionApi(account_no); 
+       if (res?.status != 200) {
+      console.log(res?.data.data);
+      return;
+    }
     setTransactionData(res?.data.data);
   }
 
@@ -44,6 +52,7 @@ export default function TransactionPage() {
   if (!isLogin) {
     return <h1>Unauthorized</h1>;
   }
+
 
   return (
     <main className="p-2">

@@ -5,8 +5,6 @@ import prisma from "@/lib/prisma";
 import { isDateExpired } from "@/helper/checkOtpExp";
 import axios from "axios";
 
-
-
 export async function GET(
   req: NextRequest,
   { params }: { params: { email: string } }
@@ -17,6 +15,24 @@ export async function GET(
   try {
     if (!params.email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
+    }
+
+    const isUserExist = await prisma.user.findUnique({
+      where: {
+        email: params.email,
+      },
+    });
+    console.log(!isUserExist);
+
+    if (!isUserExist) {
+      return NextResponse.json(
+        {
+          data: "No user find with this credentials",
+        },
+        {
+          status: 500,
+        }
+      );
     }
 
     const otp = generateOTP();
@@ -59,7 +75,7 @@ export async function GET(
       return NextResponse.json({ error: "error saving OTP" }, { status: 500 });
 
     return NextResponse.json(
-      { data: "Please Check your email for the OTP" },
+      { data: "Please Check your email for the OTP", success: true },
       { status: 200 }
     );
   } catch (error) {
