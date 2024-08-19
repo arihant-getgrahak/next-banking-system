@@ -7,3 +7,11 @@ export function generateUniqueAccountNumber() {
   const random = crypto.randomInt(min, max + 1);
   return random.toString().padStart(length, "0");
 }
+
+export function generateOTP() {
+  const length = 4;
+  const min = 10 ** (length - 1);
+  const max = 10 ** length - 1;
+  const random = crypto.randomInt(min, max + 1);
+  return random.toString().padStart(length, "0");
+}

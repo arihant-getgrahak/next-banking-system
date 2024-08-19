@@ -16,10 +16,11 @@ model User {
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
   openingBalance Int      @default(0)
-  currentBalance Float      @default(0)
+  currentBalance Float    @default(0)
 
   sentTransaction     Transaction[] @relation("SentTransactions")
   receivedTransaction Transaction[] @relation("ReceivedTransactions")
+  otp                 Otp[]
 }
 
 model Transaction {
@@ -37,6 +38,14 @@ model Transaction {
   @@index([sender_acc_no])
   @@index([receiver_acc_no])
   @@index([type])
+}
+
+model Otp {
+  id       String   @id @default(cuid()) @map("_id")
+  otp      String?
+  otpExp   DateTime
+  user_otp String
+  sender   User     @relation(fields: [user_otp], references: [email])
 }
 
 enum TransactionType {
