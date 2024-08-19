@@ -21,9 +21,9 @@ export async function GET(
 
     const otp = generateOTP();
     var data = {
-      service_id: "service_6qypzpj",
-      template_id: "template_uubf86m",
-      user_id: "H1WprcdwjNEPDR2V_",
+      service_id: process.env.EMAIL_SERVICE_ID,
+      template_id: process.env.EMAIL_TEMPLATE_ID,
+      user_id: process.env.EMAIL_USER_ID,
       template_params: {
         email: params.email,
         otp: otp,
