@@ -15,7 +15,7 @@ model User {
   account_no     String   @unique
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
-  openingBalance Int      @default(0)
+  openingBalance Int      @default(2000)
   currentBalance Float    @default(0)
 
   sentTransaction     Transaction[] @relation("SentTransactions")
